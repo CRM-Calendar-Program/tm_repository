@@ -25,7 +25,7 @@ int getNumberOfDays(int month, int year)
         return 30;
 }
 
-void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, int firstWeekDayOfMonth, int numberOfDays, const unordered_map<int, string>& reminders)
+void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, int firstWeekDayOfMonth, int numberOfDays, const unordered_map<int, string>& reminders, int today)
 {
     sf::Font font;
     if (!font.loadFromFile("fonts/arial.ttf"))
@@ -60,7 +60,20 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, int 
         dayText.setFont(font);
         dayText.setString(to_string(d));
         dayText.setCharacterSize(24);
-        dayText.setFillColor(reminders.count(d) ? sf::Color::Red : sf::Color::Black);
+
+        if (d == today)
+        {
+            dayText.setFillColor(sf::Color::Green);
+        }
+        else if (reminders.count(d))
+        {
+            dayText.setFillColor(sf::Color::Red);
+        }
+        else
+        {
+            dayText.setFillColor(sf::Color::Black);
+        }
+
         dayText.setPosition(xOffset + (tempBreak - 1) * cellWidth, yOffset + cellHeight);
 
         if (reminders.count(d))
@@ -80,6 +93,14 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, int 
         }
         tempBreak++;
     }
+
+    sf::Text instructions;
+    instructions.setFont(font);
+    instructions.setString("N: Create Reminder  D: Delete Reminder  ESC: Cancel Input");
+    instructions.setCharacterSize(14);
+    instructions.setFillColor(sf::Color::Black);
+    instructions.setPosition(10, window.getSize().y - 20);
+    window.draw(instructions);
 }
 
 void saveReminders(const unordered_map<int, string>& reminders, const string& filename)
@@ -119,6 +140,47 @@ void loadReminders(unordered_map<int, string>& reminders, const string& filename
     }
 }
 
+void showTodayReminder(const string& reminder, const string& todayDate)
+{
+    sf::RenderWindow reminderWindow(sf::VideoMode(400, 200), "today's reminder");
+
+    sf::Font font;
+    if (!font.loadFromFile("fonts/arial.ttf"))
+    {
+        cerr << "폰트 파일을 불러오는 데 실패했습니다." << endl;
+        return;
+    }
+
+    sf::Text reminderText;
+    reminderText.setFont(font);
+    reminderText.setString(reminder);
+    reminderText.setCharacterSize(24);
+    reminderText.setFillColor(sf::Color::Black);
+    reminderText.setPosition(20, 80);
+
+    sf::Text dateText;
+    dateText.setFont(font);
+    dateText.setString(todayDate + "\nToday's reminder");
+    dateText.setCharacterSize(18);
+    dateText.setFillColor(sf::Color::Black);
+    dateText.setPosition(20, 20);
+
+    while (reminderWindow.isOpen())
+    {
+        sf::Event event;
+        while (reminderWindow.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                reminderWindow.close();
+        }
+
+        reminderWindow.clear(sf::Color::White);
+        reminderWindow.draw(reminderText);
+        reminderWindow.draw(dateText);
+        reminderWindow.display();
+    }
+}
+
 int main()
 {
     int currentDay, currentMonth, currentYear, firstWeekDayOfMonth, numberOfDays;
@@ -145,10 +207,10 @@ int main()
     unordered_map<int, string> reminders;
     loadReminders(reminders, "reminders.txt");
 
-    // 오늘의 리마인더를 콘솔에 출력합니다.
     if (reminders.count(currentDay))
     {
-        cout << "오늘의 리마인더: " << reminders[currentDay] << endl;
+        string todayDate = to_string(currentYear) + "-" + to_string(currentMonth + 1) + "-" + to_string(currentDay);
+        showTodayReminder(reminders[currentDay], todayDate);
     }
 
     sf::Font font;
@@ -160,7 +222,9 @@ int main()
 
     string inputText;
     bool inputActive = false;
+    bool deleteActive = false;
     int reminderDay = 0;
+    string displayReminder;
 
     while (window.isOpen())
     {
@@ -180,7 +244,40 @@ int main()
                 if (day >= 1 && day <= numberOfDays)
                 {
                     reminderDay = day;
+                    displayReminder = reminders.count(day) ? reminders[day] : "";
                     inputActive = true;
+                    inputText.clear();
+                }
+            }
+
+            if (event.type == sf::Event::KeyPressed)
+            {
+                if (inputActive && event.key.code == sf::Keyboard::Escape)
+                {
+                    inputActive = false;
+                }
+                else if (inputActive && event.key.code == sf::Keyboard::Enter)
+                {
+                    reminders[reminderDay] = inputText;
+                    saveReminders(reminders, "reminders.txt");
+                    inputActive = false;
+                }
+                else if (deleteActive && event.key.code == sf::Keyboard::Enter)
+                {
+                    reminders.erase(reminderDay);
+                    saveReminders(reminders, "reminders.txt");
+                    deleteActive = false;
+                }
+                else if (event.key.code == sf::Keyboard::N)
+                {
+                    inputActive = true;
+                    deleteActive = false;
+                    inputText.clear();
+                }
+                else if (event.key.code == sf::Keyboard::D)
+                {
+                    deleteActive = true;
+                    inputActive = false;
                     inputText.clear();
                 }
             }
@@ -191,12 +288,6 @@ int main()
                 {
                     inputText.pop_back();
                 }
-                else if (event.text.unicode == '\r')
-                {
-                    reminders[reminderDay] = inputText;
-                    saveReminders(reminders, "reminders.txt");
-                    inputActive = false;
-                }
                 else if (event.text.unicode < 128 && event.text.unicode != '\b')
                 {
                     inputText += static_cast<char>(event.text.unicode);
@@ -205,7 +296,7 @@ int main()
         }
 
         window.clear(sf::Color::White);
-        drawCalendar(window, weekDays, firstWeekDayOfMonth, numberOfDays, reminders);
+        drawCalendar(window, weekDays, firstWeekDayOfMonth, numberOfDays, reminders, currentDay);
 
         if (inputActive)
         {
@@ -220,18 +311,28 @@ int main()
             inputTextDisplay.setFillColor(sf::Color::Black);
             inputTextDisplay.setPosition(60, 560);
             window.draw(inputTextDisplay);
+
+            if (!displayReminder.empty())
+            {
+                sf::Text reminderDisplay("Reminder: " + displayReminder, font, 24);
+                reminderDisplay.setFillColor(sf::Color::Red);
+                reminderDisplay.setPosition(50, 500);
+                window.draw(reminderDisplay);
+            }
+        }
+
+        if (deleteActive)
+        {
+            sf::Text deleteText;
+            deleteText.setFont(font);
+            deleteText.setString("Press Enter to delete reminder for day " + to_string(reminderDay));
+            deleteText.setCharacterSize(24);
+            deleteText.setFillColor(sf::Color::Red);
+            deleteText.setPosition(50, 550);
+            window.draw(deleteText);
         }
 
         window.display();
-    }
-
-    if (!reminders.empty())
-    {
-        cout << "\n==================리마인더=====================\n";
-        for (const auto& reminder : reminders)
-        {
-            cout << "리마인더 날짜: " << reminder.first << "\n" << reminder.second << endl;
-        }
     }
 
     return 0;
