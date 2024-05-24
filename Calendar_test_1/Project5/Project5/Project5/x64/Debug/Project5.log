@@ -1,0 +1,18 @@
+﻿  FileName.cpp
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(47,54): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(47,37): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(64,76): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(64,37): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,68): warning C4244: '인수': 'int'에서 'T'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,68): warning C4244:         with
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,68): warning C4244:         [
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,68): warning C4244:             T=float
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,68): warning C4244:         ]
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,57): warning C4244: '인수': 'int'에서 'T'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,57): warning C4244:         with
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,57): warning C4244:         [
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,57): warning C4244:             T=float
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(68,57): warning C4244:         ]
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(70,84): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\FileName.cpp(70,45): warning C4244: '인수': 'int'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project5.vcxproj -> C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\x64\Debug\Project5.exe
