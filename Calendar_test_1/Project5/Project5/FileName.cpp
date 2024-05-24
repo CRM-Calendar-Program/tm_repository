@@ -96,7 +96,7 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, int 
 
     sf::Text instructions;
     instructions.setFont(font);
-    instructions.setString("N: Create Reminder  D: Delete Reminder  ESC: Cancel Input");
+    instructions.setString("Insert: Create Reminder  Delete: Delete Reminder  ESC: Cancel Input");
     instructions.setCharacterSize(14);
     instructions.setFillColor(sf::Color::Black);
     instructions.setPosition(10, window.getSize().y - 20);
@@ -268,13 +268,13 @@ int main()
                     saveReminders(reminders, "reminders.txt");
                     deleteActive = false;
                 }
-                else if (event.key.code == sf::Keyboard::N)
+                else if (event.key.code == sf::Keyboard::Insert)
                 {
                     inputActive = true;
                     deleteActive = false;
                     inputText.clear();
                 }
-                else if (event.key.code == sf::Keyboard::D)
+                else if (event.key.code == sf::Keyboard::Delete)
                 {
                     deleteActive = true;
                     inputActive = false;
