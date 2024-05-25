@@ -243,6 +243,7 @@ int main()
     string inputText;
     bool inputActive = false;
     bool deleteActive = false;
+    bool displayActive = false;
     int reminderDay = 0;
     string displayReminder;
 
@@ -254,7 +255,7 @@ int main()
             if (event.type == sf::Event::Closed)
                 window.close();
 
-            // 날짜를 클릭하면 리마인더 입력 모드로 전환
+            // 날짜를 클릭하면 저장된 리마인더를 표시
             if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left)
             {
                 int x = event.mouseButton.x;
@@ -266,7 +267,7 @@ int main()
                 {
                     reminderDay = day;
                     displayReminder = reminders.count(day) ? reminders[day] : "";
-                    inputActive = true;
+                    displayActive = true;
                     inputText.clear();
                 }
             }
@@ -279,6 +280,7 @@ int main()
                 {
                     inputActive = false;
                     deleteActive = false;
+                    displayActive = false;
                 }
                 // Enter 키를 누르면 리마인더 저장
                 else if (inputActive && event.key.code == sf::Keyboard::Enter)
@@ -286,6 +288,7 @@ int main()
                     reminders[reminderDay] = inputText;
                     saveReminders(reminders, "reminders.txt");
                     inputActive = false;
+                    displayActive = false;
                 }
                 // Enter 키를 누르면 리마인더 삭제
                 else if (deleteActive && event.key.code == sf::Keyboard::Enter)
@@ -293,6 +296,7 @@ int main()
                     reminders.erase(reminderDay);
                     saveReminders(reminders, "reminders.txt");
                     deleteActive = false;
+                    displayActive = false;
                 }
                 // Insert 키를 누르면 리마인더 입력 모드로 전환
                 else if (event.key.code == sf::Keyboard::Insert)
@@ -327,15 +331,26 @@ int main()
         window.clear(sf::Color::White);
         drawCalendar(window, weekDays, months[currentMonth] + " " + to_string(currentYear), firstWeekDayOfMonth, numberOfDays, reminders, currentDay);
 
-        // 입력 창(사각형)을 화면에 표시
+        // 입력 창(사각형)을 화면에 표시 inputActive 기능
         if (inputActive)
         {
+            //insert키를 누르면 텍스트 표시
+            sf::Text insertText;
+            insertText.setFont(font);
+            insertText.setString("Press Enter to input reminder for day " + to_string(reminderDay));
+            insertText.setCharacterSize(24);
+            insertText.setFillColor(sf::Color::Red);
+            insertText.setPosition(50, window.getSize().y - 225);
+            window.draw(insertText);
+
+            // 입력 상자 그리기
             sf::RectangleShape inputBox(sf::Vector2f(700, 100));
             inputBox.setFillColor(sf::Color::White);
             inputBox.setOutlineColor(sf::Color::Black);
             inputBox.setOutlineThickness(1);
             inputBox.setPosition(50, window.getSize().y - 150);
             window.draw(inputBox);
+
             // 입력 텍스트 창 위치
             sf::Text inputTextDisplay(inputText, font, 24);
             inputTextDisplay.setFillColor(sf::Color::Black);
@@ -343,16 +358,10 @@ int main()
             window.draw(inputTextDisplay);
 
             // 선택된 날짜에 리마인더가 있는 경우 표시
-            if (!displayReminder.empty())
-            {
-                sf::Text reminderDisplay("Reminder: " + displayReminder, font, 24);
-                reminderDisplay.setFillColor(sf::Color::Black);
-                reminderDisplay.setPosition(50, window.getSize().y - 200);
-                window.draw(reminderDisplay);
-            }
+            displayActive = true;
         }
 
-        // 삭제 모드 메시지 표시
+        // 삭제 모드 메시지 표시 deleteActive 기능
         if (deleteActive)
         {
             sf::Text deleteText;
@@ -360,8 +369,22 @@ int main()
             deleteText.setString("Press Enter to delete reminder for day " + to_string(reminderDay));
             deleteText.setCharacterSize(24);
             deleteText.setFillColor(sf::Color::Red);
-            deleteText.setPosition(50, window.getSize().y - 200);
+            deleteText.setPosition(50, window.getSize().y - 225);
             window.draw(deleteText);
+
+            // 선택된 날짜에 리마인더가 있는 경우 표시
+            displayActive = true;
+        }
+
+        // 리마인더가 있으면 화면에 표시 displayActivate 기능
+        if (displayActive) {
+            if (!displayReminder.empty())
+            {
+                sf::Text reminderDisplay("Reminder: " + displayReminder, font, 24);
+                reminderDisplay.setFillColor(sf::Color::Black);
+                reminderDisplay.setPosition(50, window.getSize().y - 200);
+                window.draw(reminderDisplay);
+            }
         }
 
         window.display();
