@@ -1,4 +1,4 @@
-15:coming soon
+15:no
 24:new tm's repository
-9:new event
+9:event
 29:new event

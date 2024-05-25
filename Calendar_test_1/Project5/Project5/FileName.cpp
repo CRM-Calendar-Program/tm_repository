@@ -329,11 +329,11 @@ int main()
         // 입력 창을 화면에 표시
         if (inputActive)
         {
-            sf::RectangleShape inputBox(sf::Vector2f(700, 50));
+            sf::RectangleShape inputBox(sf::Vector2f(700, 100));
             inputBox.setFillColor(sf::Color::White);
             inputBox.setOutlineColor(sf::Color::Black);
             inputBox.setOutlineThickness(1);
-            inputBox.setPosition(50, window.getSize().y - 200);
+            inputBox.setPosition(50, window.getSize().y - 190);
             window.draw(inputBox);
 
             sf::Text inputTextDisplay(inputText, font, 24);
@@ -346,7 +346,7 @@ int main()
             {
                 sf::Text reminderDisplay("Reminder: " + displayReminder, font, 24);
                 reminderDisplay.setFillColor(sf::Color::Red);
-                reminderDisplay.setPosition(50, window.getSize().y - 250);
+                reminderDisplay.setPosition(50, window.getSize().y - 225);
                 window.draw(reminderDisplay);
             }
         }
