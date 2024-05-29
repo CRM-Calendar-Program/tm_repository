@@ -27,7 +27,7 @@ int getNumberOfDays(int month, int year)
 }
 
 // 달력을 그리는 함수
-void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, const string& currentMonthStr, int firstWeekDayOfMonth, int numberOfDays, const unordered_map<int, string>& reminders, int today)
+void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, const string& currentMonthStr, int firstWeekDayOfMonth, int numberOfDays, const unordered_map<string, string>& reminders, int today, const string& currentYearMonth)
 {
     sf::Font font;
     if (!font.loadFromFile("fonts/arial.ttf"))
@@ -74,11 +74,13 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, cons
         dayText.setString(to_string(d));
         dayText.setCharacterSize(24);
 
+        string key = currentYearMonth + "-" + to_string(d);
+
         if (d == today)
         {
             dayText.setFillColor(sf::Color::Green);
         }
-        else if (reminders.count(d))
+        else if (reminders.count(key))
         {
             dayText.setFillColor(sf::Color::Blue);
         }
@@ -89,7 +91,7 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, cons
 
         dayText.setPosition(xOffset + (tempBreak - 1) * cellWidth, yOffset + cellHeight);
 
-        if (reminders.count(d))
+        if (reminders.count(key))
         {
             sf::RectangleShape reminderBox(sf::Vector2f(cellWidth, cellHeight));
             reminderBox.setFillColor(sf::Color::Yellow);
@@ -118,7 +120,7 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, cons
 }
 
 // 리마인더를 파일에 저장하는 함수
-void saveReminders(const unordered_map<int, string>& reminders, const string& filename)
+void saveReminders(const unordered_map<string, string>& reminders, const string& filename)
 {
     ofstream outFile(filename);
     if (!outFile)
@@ -134,7 +136,7 @@ void saveReminders(const unordered_map<int, string>& reminders, const string& fi
 }
 
 // 파일에서 리마인더를 불러오는 함수
-void loadReminders(unordered_map<int, string>& reminders, const string& filename)
+void loadReminders(unordered_map<string, string>& reminders, const string& filename)
 {
     ifstream inFile(filename);
     if (!inFile)
@@ -149,9 +151,9 @@ void loadReminders(unordered_map<int, string>& reminders, const string& filename
         size_t colonPos = line.find(':');
         if (colonPos != string::npos)
         {
-            int day = stoi(line.substr(0, colonPos));
+            string date = line.substr(0, colonPos);
             string message = line.substr(colonPos + 1);
-            reminders[day] = message;
+            reminders[date] = message;
         }
     }
 }
@@ -223,14 +225,17 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "Calendar");
 
     // 리마인더를 파일에서 불러옴
-    unordered_map<int, string> reminders;
+    unordered_map<string, string> reminders;
     loadReminders(reminders, "reminders.txt");
 
+    string currentYearMonth = to_string(currentYear) + "-" + to_string(currentMonth + 1);
+
     // 오늘 리마인더가 있는 경우 표시
-    if (reminders.count(currentDay))
+    string todayKey = currentYearMonth + "-" + to_string(currentDay);
+    if (reminders.count(todayKey))
     {
         string todayDate = to_string(currentYear) + "-" + to_string(currentMonth + 1) + "-" + to_string(currentDay);
-        showTodayReminder(reminders[currentDay], todayDate);
+        showTodayReminder(reminders[todayKey], todayDate);
     }
 
     sf::Font font;
@@ -266,7 +271,8 @@ int main()
                 if (day >= 1 && day <= numberOfDays)
                 {
                     reminderDay = day;
-                    displayReminder = reminders.count(day) ? reminders[day] : "";
+                    string key = currentYearMonth + "-" + to_string(day);
+                    displayReminder = reminders.count(key) ? reminders[key] : "";
                     displayActive = true;
                     inputText.clear();
                 }
@@ -285,7 +291,8 @@ int main()
                 // Enter 키를 누르면 리마인더 저장
                 else if (inputActive && event.key.code == sf::Keyboard::Enter)
                 {
-                    reminders[reminderDay] = inputText;
+                    string key = currentYearMonth + "-" + to_string(reminderDay);
+                    reminders[key] = inputText;
                     saveReminders(reminders, "reminders.txt");
                     inputActive = false;
                     displayActive = false;
@@ -293,7 +300,8 @@ int main()
                 // Enter 키를 누르면 리마인더 삭제
                 else if (deleteActive && event.key.code == sf::Keyboard::Enter)
                 {
-                    reminders.erase(reminderDay);
+                    string key = currentYearMonth + "-" + to_string(reminderDay);
+                    reminders.erase(key);
                     saveReminders(reminders, "reminders.txt");
                     deleteActive = false;
                     displayActive = false;
@@ -329,7 +337,7 @@ int main()
         }
 
         window.clear(sf::Color::White);
-        drawCalendar(window, weekDays, months[currentMonth] + " " + to_string(currentYear), firstWeekDayOfMonth, numberOfDays, reminders, currentDay);
+        drawCalendar(window, weekDays, months[currentMonth] + " " + to_string(currentYear), firstWeekDayOfMonth, numberOfDays, reminders, currentDay, currentYearMonth);
 
         // 입력 창(사각형)을 화면에 표시 inputActive 기능
         if (inputActive)
