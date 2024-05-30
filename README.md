@@ -18,14 +18,15 @@ PW(미정)
 QXlsx, openXlsx 등
 xlsx직접사용에서 csv사용으로 변경
 
-========================
+========================complete log
 project1-csv로 읽기
 project2-libxl로 읽기
 project3-calendar
 -----change organization
 project4-calendar using graphics library
 project5-calendar using mouse, keyboard-add function
-
+---------------------
+projectpro-connected to Google calendar/ using Google Api
 ========================
 calendar-function-GoogleCalendarApi
 https://console.cloud.google.com/apis/api/calendar-json.googleapis.com/
