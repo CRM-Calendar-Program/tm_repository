@@ -5,8 +5,6 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
-.json/
-
 # AWS User-specific
 .idea/**/aws.xml
 
