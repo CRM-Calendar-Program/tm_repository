@@ -5,6 +5,9 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
+# .gitignore 파일 내용
+credentials.json
+
 # AWS User-specific
 .idea/**/aws.xml
 
