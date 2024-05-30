@@ -6,7 +6,7 @@
 .idea/**/shelf
 
 # .gitignore 파일 내용
-credentials.json
+projectPro/.json
 
 # AWS User-specific
 .idea/**/aws.xml
