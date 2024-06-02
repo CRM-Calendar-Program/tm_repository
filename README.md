@@ -1,31 +1,13 @@
-# Excel_in_Taemin
+# Taemin Kim's repository
 
-1. component
-이름 string
-성별(남1/녀2) int
-나이 int
-전화번호 int
-방문횟수 int
-ID string
-PW(미정)
-
-2. function
-파일 읽기
-행, 열 구분
-특정 정보 찾기(이름 등)
-
-3. delete data
-QXlsx, openXlsx 등
-xlsx직접사용에서 csv사용으로 변경
-
-========================
+맡은 부분- 캘린더, 구글api와 연동
+========================complete log
 project1-csv로 읽기
 project2-libxl로 읽기
 project3-calendar
------change organization
+-----change organization--------(https://github.com/codinghajo3 -> https://github.com/codinghaezo)
 project4-calendar using graphics library
 project5-calendar using mouse, keyboard-add function
-
+---------------------구글api
+projectpro-connected to Google calendar/ using Google Api
 ========================
-calendar-function-GoogleCalendarApi
-https://console.cloud.google.com/apis/api/calendar-json.googleapis.com/
