@@ -115,7 +115,7 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, cons
     instructions.setString("Insert: Create Reminder  Delete: Delete Reminder  ESC: Cancel");
     instructions.setCharacterSize(14);
     instructions.setFillColor(sf::Color::Black);
-    instructions.setPosition(50, window.getSize().y - 240);
+    instructions.setPosition(50, window.getSize().y - 220);
     window.draw(instructions);
 }
 
@@ -348,7 +348,7 @@ int main()
             insertText.setString("Press Enter to input reminder for day " + to_string(reminderDay));
             insertText.setCharacterSize(24);
             insertText.setFillColor(sf::Color::Red);
-            insertText.setPosition(50, window.getSize().y - 225);
+            insertText.setPosition(50, window.getSize().y - 210);
             window.draw(insertText);
 
             // 입력 상자 그리기
@@ -377,7 +377,7 @@ int main()
             deleteText.setString("Press Enter to delete reminder for day " + to_string(reminderDay));
             deleteText.setCharacterSize(24);
             deleteText.setFillColor(sf::Color::Red);
-            deleteText.setPosition(50, window.getSize().y - 225);
+            deleteText.setPosition(50, window.getSize().y - 210);
             window.draw(deleteText);
 
             // 선택된 날짜에 리마인더가 있는 경우 표시
@@ -390,7 +390,7 @@ int main()
             {
                 sf::Text reminderDisplay("Reminder: " + displayReminder, font, 24);
                 reminderDisplay.setFillColor(sf::Color::Black);
-                reminderDisplay.setPosition(50, window.getSize().y - 200);
+                reminderDisplay.setPosition(50, window.getSize().y - 185);
                 window.draw(reminderDisplay);
             }
         }
