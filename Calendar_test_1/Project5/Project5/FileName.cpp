@@ -74,7 +74,7 @@ void drawCalendar(sf::RenderWindow& window, const vector<string>& weekDays, cons
         dayText.setString(to_string(d));
         dayText.setCharacterSize(24);
 
-        string key = currentYearMonth + "-" + to_string(d);
+        string key = currentYearMonth + "-" + (d < 10 ? "0" : "") + to_string(d);
 
         if (d == today)
         {
@@ -228,13 +228,13 @@ int main()
     unordered_map<string, string> reminders;
     loadReminders(reminders, "reminders.txt");
 
-    string currentYearMonth = to_string(currentYear) + "-" + to_string(currentMonth + 1);
+    string currentYearMonth = to_string(currentYear) + "-" + (currentMonth + 1 < 10 ? "0" : "") + to_string(currentMonth + 1);
 
     // 오늘 리마인더가 있는 경우 표시
-    string todayKey = currentYearMonth + "-" + to_string(currentDay);
+    string todayKey = currentYearMonth + "-" + (currentDay < 10 ? "0" : "") + to_string(currentDay);
     if (reminders.count(todayKey))
     {
-        string todayDate = to_string(currentYear) + "-" + to_string(currentMonth + 1) + "-" + to_string(currentDay);
+        string todayDate = to_string(currentYear) + "-" + (currentMonth + 1 < 10 ? "0" : "") + to_string(currentMonth + 1) + "-" + (currentDay < 10 ? "0" : "") + to_string(currentDay);
         showTodayReminder(reminders[todayKey], todayDate);
     }
 
@@ -271,7 +271,7 @@ int main()
                 if (day >= 1 && day <= numberOfDays)
                 {
                     reminderDay = day;
-                    string key = currentYearMonth + "-" + to_string(day);
+                    string key = currentYearMonth + "-" + (day < 10 ? "0" : "") + to_string(day);
                     displayReminder = reminders.count(key) ? reminders[key] : "";
                     displayActive = true;
                     inputText.clear();
@@ -291,7 +291,7 @@ int main()
                 // Enter 키를 누르면 리마인더 저장
                 else if (inputActive && event.key.code == sf::Keyboard::Enter)
                 {
-                    string key = currentYearMonth + "-" + to_string(reminderDay);
+                    string key = currentYearMonth + "-" + (reminderDay < 10 ? "0" : "") + to_string(reminderDay);
                     reminders[key] = inputText;
                     saveReminders(reminders, "reminders.txt");
                     inputActive = false;
@@ -300,7 +300,7 @@ int main()
                 // Enter 키를 누르면 리마인더 삭제
                 else if (deleteActive && event.key.code == sf::Keyboard::Enter)
                 {
-                    string key = currentYearMonth + "-" + to_string(reminderDay);
+                    string key = currentYearMonth + "-" + (reminderDay < 10 ? "0" : "") + to_string(reminderDay);
                     reminders.erase(key);
                     saveReminders(reminders, "reminders.txt");
                     deleteActive = false;
