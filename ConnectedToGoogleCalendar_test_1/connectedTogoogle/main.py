@@ -76,9 +76,10 @@ def add_reminder_to_calendar(service, date_str, reminder):
 
 def get_existing_reminders(service):
     """구글 캘린더에서 기존 리마인더 가져오기"""
-    now = datetime.datetime.utcnow().isoformat() + 'Z'
-    events_result = service.events().list(calendarId='primary', timeMin=now,
-                                          maxResults=100, singleEvents=True,
+    # 현재 시간으로부터 1년 전까지의 일정을 가져오도록 설정
+    past_time = (datetime.datetime.utcnow() - datetime.timedelta(days=365)).isoformat() + 'Z'
+    events_result = service.events().list(calendarId='primary', timeMin=past_time,
+                                          maxResults=1000, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
     reminders = []
@@ -111,12 +112,14 @@ if __name__ == '__main__':
     file_path = r"C:\Users\ktmth\source\repos\codinghaezo\tm_repository\Calendar_test_1\Project5\Project5\reminders.txt"
     reminders = read_reminders(file_path)
 
-    # 리마인더를 구글 캘린더에 추가
-    for date_str, reminder in reminders:
-        add_reminder_to_calendar(service, date_str, reminder)
-
     # 구글 캘린더에서 기존 리마인더 가져오기
     existing_reminders = get_existing_reminders(service)
+    existing_reminder_set = set(existing_reminders)
+
+    # 리마인더를 구글 캘린더에 추가 (중복 방지)
+    for date_str, reminder in reminders:
+        if (date_str, reminder) not in existing_reminder_set:
+            add_reminder_to_calendar(service, date_str, reminder)
 
     # 리마인더를 텍스트 파일에 쓰기 (기존 내용을 유지하고 추가)
     write_reminders(file_path, existing_reminders)
