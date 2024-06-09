@@ -15,5 +15,5 @@ projectpro-connected to Google calendar/ using Google Api
 connectedTogoogle-connected with local calendar program(project5)
 ========================update log
 local calendar의 날짜 형식 변경 (yyyy-mm-dd) 완료
-google calendar api와 local calendar merge
-cpp에서 py구동 확인
+google calendar api와 local calendar merge -combine project 완료
+cpp에서 py구동 확인 system("python main.py") 완료
