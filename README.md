@@ -13,6 +13,8 @@ project5-calendar using mouse, keyboard-add function
 ConnectedToGoogleCalendar_test_1:
 projectpro-connected to Google calendar/ using Google Api
 connectedTogoogle-connected with local calendar program(project5)
+
+gemini_test_1-txt summary program 예정
 ========================update log
 local calendar의 날짜 형식 변경 (yyyy-mm-dd) 완료
 google calendar api와 local calendar merge -combine project 완료
