@@ -8,7 +8,7 @@ from google.cloud import language_v1
 
 
 # 클라이언트 시크릿 파일 경로 (key_path로 지정)
-key_path = r'C:\Users\ktmth\Desktop\client_secret_177448624657-c00odj5o03u3bn9g436vijh97m0qaupl.apps.googleusercontent.com.json'
+key_path = r'C:\Users\ktmth\Desktop\client_secret_.apps.googleusercontent.com.json'
 
 # Google Cloud Natural Language API의 스코프
 SCOPES = ['https://www.googleapis.com/auth/cloud-language']
